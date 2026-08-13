@@ -1,0 +1,38 @@
+:root {
+  color-scheme: dark;
+  --color-ink: #1d141c;
+  --color-night: #30202d;
+  --color-surface: rgba(49, 29, 43, 0.92);
+  --color-surface-soft: rgba(66, 39, 56, 0.78);
+  --color-primary: #b65f7f;
+  --color-primary-strong: #d97e9f;
+  --color-secondary: #f2c4d1;
+  --color-accent: #e6b681;
+  --color-info: #9bc3d5;
+  --color-text: #fffaf4;
+  --color-text-muted: #ddcbd4;
+  --color-danger: #e77c84;
+  --color-success: #8fc2a4;
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-scrim: rgba(3, 4, 13, 0.72);
+  --font-display: "Songti SC", "Noto Serif CJK SC", STSong, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, monospace;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --shadow-panel: 0 18px 60px rgba(1, 2, 9, 0.48);
+  --focus-ring: 0 0 0 3px rgba(242, 196, 209, 0.82);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 160ms;
+  --duration-normal: 240ms;
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}

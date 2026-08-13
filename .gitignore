@@ -1,0 +1,35 @@
+# 依赖与构建产物
+node_modules/
+dist/
+*.tsbuildinfo
+
+# 测试输出
+test-results/
+playwright-report/
+coverage/
+
+# 本地配置、密钥与系统状态
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+.DS_Store
+.workbuddy-ai/
+.codebuddy/
+
+# 大体量生成母图、发布包与本地备份不进入公开仓库
+/artifacts/
+/backups/
+/game/backups/
+/game/artifacts/
+
+# 正式资产审计依赖这三份轻量提示词清单。
+!/artifacts/
+/artifacts/*
+!/artifacts/imagegen-v18/
+/artifacts/imagegen-v18/*
+!/artifacts/imagegen-v18/PROMPTS.md
+!/artifacts/imagegen-v18/BACKGROUND-PROMPTS.md
+!/artifacts/imagegen-v18/EXPRESSION-PROMPTS.md

@@ -1,0 +1,53 @@
+{
+  "name": "4945-vn",
+  "private": true,
+  "version": "4.0.0",
+  "description": "移动端优先的中文 Web 视觉小说《4945区：先上号再说》",
+  "license": "MIT",
+  "author": "YouRen",
+  "homepage": "https://github.com/YouRen1320/4945-vn-open#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YouRen1320/4945-vn-open.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YouRen1320/4945-vn-open/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build && node scripts/inject-sw-assets.mjs",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc -b --pretty false",
+    "audit:assets": "node scripts/audit-assets.mjs",
+    "audit:assets:final": "node scripts/audit-assets.mjs --require-managed-final",
+    "package:v17-cgs": "node scripts/package-v17-cgs.mjs",
+    "package:v18-cgs": "node scripts/package-v18-cgs.mjs",
+    "qa:v17-cgs": "node scripts/render-v17-cg-qa.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "smoke:public": "node scripts/public-smoke.mjs",
+    "backup": "node scripts/backup.mjs",
+    "deploy": "node scripts/deploy.mjs"
+  },
+  "dependencies": {
+    "@lucide/vue": "^1.27.0",
+    "pinia": "^4.0.2",
+    "vue": "^3.5.40"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^26.1.2",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/tsconfig": "^0.9.1",
+    "jsdom": "29.1.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.5",
+    "vitest": "^4.1.10",
+    "vue-tsc": "^3.3.8"
+  }
+}
