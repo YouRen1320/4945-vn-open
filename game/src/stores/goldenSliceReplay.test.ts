@@ -73,6 +73,7 @@ describe('黄金样板纯沙盒', () => {
     expect(store.state).toBeNull()
   })
 
+  // 全路径矩阵在共享 CI 机器上会明显慢于本地，为这条穷举测试保留独立预算。
   it('穷举 144 种选择组合，均能完成七场并兑现关键回响', () => {
     const store = useGameStore()
     let paths = 0
@@ -116,7 +117,7 @@ describe('黄金样板纯沙盒', () => {
     }
 
     expect(paths).toBe(144)
-  })
+  }, 15_000)
 
   it('完整游玩前后所有本地存储和收藏逐字节不变', () => {
     const store = useGameStore()
