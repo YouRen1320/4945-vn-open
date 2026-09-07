@@ -1,4 +1,4 @@
-name: Quality gates
+name: 质量门禁
 
 on:
   push:
@@ -15,26 +15,40 @@ permissions:
 
 jobs:
   verify:
+    name: 类型、测试、素材与构建验证
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         working-directory: game
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - name: 检出代码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: 配置 Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 22.14.0
           cache: npm
           cache-dependency-path: game/package-lock.json
-      - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps chromium
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run audit:assets:final
-      - run: npm run build
-      - run: npm run test:e2e
-      - if: failure()
-        uses: actions/upload-artifact@v7
+      - name: 安装锁定依赖
+        run: npm ci --ignore-scripts
+      - name: 安装 Chromium 与系统依赖
+        run: npx playwright install --with-deps chromium
+      - name: 检查 TypeScript 类型
+        run: npm run typecheck
+      - name: 运行单元与组件测试
+        run: npm test
+      - name: 审计正式素材
+        run: npm run audit:assets:final
+      - name: 构建生产版本
+        run: npm run build
+      - name: 运行端到端测试
+        run: npm run test:e2e
+      - name: 上传 Playwright 失败证据
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: playwright-failure-evidence
           path: |
