@@ -112,8 +112,9 @@ try {
   await releaseNotesButton.click()
   const releaseNotesDialog = page.getByRole('dialog', { name: '本次更新' })
   await releaseNotesDialog.getByText(`VERSION ${appVersion}`, { exact: true }).waitFor()
-  if (await releaseNotesDialog.locator('article section').count() !== 4) {
-    throw new Error('公网更新说明章节数量不正确')
+  // 历史版本说明会继续累积；公网门禁只固定当前稳定版不可缺少的核心章节。
+  for (const heading of ['事件三完整季', '完整结局与失败余波', '十五种关系状态完整收束', '第三季独立结局档案']) {
+    await releaseNotesDialog.getByRole('heading', { name: heading, exact: true }).waitFor()
   }
   await page.keyboard.press('Escape')
   await moreButton.waitFor()
@@ -155,26 +156,30 @@ try {
   if (overflow > 1) throw new Error(`公网页面横向溢出 ${overflow}px`)
   await page.screenshot({ path: 'artifacts/qa-public-mobile.png' })
 
-  // Public smoke crosses the real setup and first chat choice, catching stale SW bundles that a title-only check misses.
+  // 公网冒烟必须走过真实建档和首个聊天选择，避免只有标题页更新、剧情包仍旧的假通过。
   await page.getByRole('button', { name: /开始主线/ }).click()
   await page.getByRole('button', { name: '查看消息' }).click()
   await page.getByRole('button', { name: '接受邀请' }).click()
   await page.getByLabel('这次准备叫什么？').fill('公网验收')
   await page.getByRole('button', { name: '进入4945区' }).click()
   await page.locator('.dialogue-zone > p').filter({ hasText: /电脑刚关掉/ }).waitFor()
-  await page.locator('.dialogue-zone').click()
-  if (!await page.locator('.chat-stage').count()) await page.locator('.dialogue-zone').click()
-  await page.locator('.chat-stage .message.current p').filter({ hasText: /影·银角，明天开服/ }).waitFor()
+  const openingDialogue = page.locator('.dialogue-zone')
+  // 低动态模式会直接完成文字动画；普通模式则可能需要第一次点击先补全文字。
+  for (let attempt = 0; attempt < 2 && await openingDialogue.count(); attempt += 1) {
+    await openingDialogue.click()
+    await page.waitForTimeout(100)
+  }
+  await page.locator('.chat-stage .message.current p').filter({ hasText: /开服就冲榜，先把一组占住/ }).waitFor()
   await page.locator('.phone-shell').click()
   await page.locator('.chat-stage .reply-list').waitFor()
   if (await page.locator('.dialogue-zone').count()) throw new Error('聊天场景仍叠加底部对白框')
   if (await page.locator('.choice-panel').count()) throw new Error('聊天场景仍叠加全局选项层')
-  await page.getByRole('button', { name: /战力怎么追/ }).click()
-  await page.locator('.chat-stage .message.current p').filter({ hasText: /什么时候不点那个红点/ }).waitFor()
+  await page.getByRole('button', { name: /老区没玩好/ }).click()
+  await page.locator('.chat-stage .message.current p').filter({ hasText: /一起冲击本服排行榜/ }).waitFor()
   await page.screenshot({ path: 'artifacts/qa-public-game-mobile.png' })
 
   await jumpToPublicNode('p08-shana-invite')
-  await page.locator('.dialogue-zone > p').filter({ hasText: /我在拉江南/ }).waitFor()
+  await page.locator('.dialogue-zone > p').filter({ hasText: /江南今晚八点带日常/ }).waitFor()
   await page.locator('.dialogue-zone').click()
   await waitForPublicSprite('.character-stage img[src*="expression-determined-v1.webp"]')
   await page.locator('.choice-panel').waitFor()
@@ -280,7 +285,7 @@ try {
   await page.locator('.dialogue-zone').click()
   await page.locator('.choice-panel').waitFor()
   await page.getByRole('button', { name: '心跳支援·1' }).click()
-  await page.getByRole('button', { name: /人先接进来/ }).click()
+  await page.getByRole('button', { name: /先把我排普通成员/ }).click()
   await page.getByText(/心跳支援协助了这次回应/).waitFor()
 
   const gameplayOverflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
